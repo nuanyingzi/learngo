@@ -28,7 +28,7 @@ func main() {
 	//var d *int
 	//*d = 100
 	//fmt.Println(*d)
-    // 报错
+	// 报错
 
 	//var e map[string]int
 	//e["深圳小王子"] = 100
@@ -38,8 +38,8 @@ func main() {
 	// 分配内存 new
 	f := new(int)
 	g := new(bool)
-	fmt.Printf("f: %T\n",f)
-	fmt.Printf("g: %T\n",g)
+	fmt.Printf("f: %T\n", f)
+	fmt.Printf("g: %T\n", g)
 	fmt.Println(*f)
 	fmt.Println(*g)
 

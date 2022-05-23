@@ -1,54 +1,101 @@
 package main
 
-// 结构体与json序列化
-
 import (
 	"encoding/json"
 	"fmt"
 )
 
-// JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。易于人阅读和编写。同时也易于机器解析和生成。
-// JSON键值对是用来保存JS对象的一种方式，键/值对组合中的键名写在前面并用双引号""包裹，使用冒号:分隔，然后紧接着值；多个键值之间使用英文,分隔。
-
-// Student 学生结构体
-type Student struct {
-	ID     int
-	Gender string
-	Name   string
+type student struct {
+	ID   int
+	Name string
 }
 
-// Class 班级
-type Class struct {
-	Title    string
-	Students []*Student
+// student的构造函数
+func newStudent(id int, name string) student {
+	return student{
+		ID:   id,
+		Name: name,
+	}
+}
+
+type class struct {
+	Title    string    `json:"title"`
+	Students []student `json:"student_list" db:"student" xml:"ss"`
 }
 
 func main() {
-	c := &Class{
-		Title:    "101",
-		Students: make([]*Student, 0, 200),
+	// 创建一个班级变量c1
+	c1 := class{
+		Title:    "火箭101",
+		Students: make([]student, 0, 20),
 	}
+	// 往班级中添加学生
 	for i := 0; i < 10; i++ {
-		stu := &Student{
-			Name:   fmt.Sprintf("stu%02d", i),
-			Gender: "男",
-			ID:     i,
-		}
-		c.Students = append(c.Students, stu)
-	}
-	// JSON序列化：结构体-->JSON格式的字符串
-	data, err := json.Marshal(c)
-	if err != nil {
-		fmt.Println("json marshal failed")
-		return
-	}
-	fmt.Printf("json:%s\n", data)
-	str := `{"Title":"101","Students":[{"ID":0,"Gender":"男","Name":"stu00"},{"ID":1,"Gender":"男","Name":"stu01"},{"ID":2,"Gender":"男","Name":"stu02"},{"ID":3,"Gender":"男","Name":"stu03"},{"ID":4,"Gender":"男","Name":"stu04"},{"ID":5,"Gender":"男","Name":"stu05"},{"ID":6,"Gender":"男","Name":"stu06"},{"ID":7,"Gender":"男","Name":"stu07"},{"ID":8,"Gender":"男","Name":"stu08"},{"ID":9,"Gender":"男","Name":"stu09"}]}`
-	c1 := &Class{}
-	err = json.Unmarshal([]byte(str), c1)
-	if err != nil {
-		fmt.Println("json unmarshal failed!")
-		return
+		temStu := newStudent(i, fmt.Sprintf("stu%02d", i))
+		c1.Students = append(c1.Students, temStu)
 	}
 	fmt.Printf("%#v\n", c1)
+
+	// JSON序列化：Go语言中的数据 -> JSON格式的字符串
+	data, err := json.Marshal(c1)
+	if err != nil {
+		fmt.Println("json marsjal failed, err:", err)
+		return
+	}
+	fmt.Printf("%T\n", data)
+	fmt.Printf("%s\n", data)
+
+	// JSON反序列化：JSON格式的字符串 -> Go语言中的数据
+	jsonStr := `{
+					"Title":"火箭103",
+					"Students":[
+						{
+							"ID":0,
+							"Name":"stu00"
+						},
+						{
+							"ID":1,
+							"Name":"stu01"
+						},
+						{
+							"ID":2,
+							"Name":"stu02"
+						},
+						{
+							"ID":3,
+							"Name":"stu03"
+						},
+						{
+							"ID":4,
+							"Name":"stu04"
+						},
+						{
+							"ID":5,
+							"Name":"stu05"
+						},
+						{
+							"ID":6,
+							"Name":"stu06"
+						},
+						{
+							"ID":7,
+							"Name":"stu07"
+						},
+						{
+							"ID":8,
+							"Name":"stu08"
+						},
+						{
+							"ID":9,
+							"Name":"stu09"
+						}
+					]
+				}`
+	var c2 class
+	err = json.Unmarshal([]byte(jsonStr), &c2)
+	if err != nil {
+		fmt.Println("json unmarsjal failed, err:", err)
+		return
+	}
+	fmt.Printf("%#v\n", c2)
 }

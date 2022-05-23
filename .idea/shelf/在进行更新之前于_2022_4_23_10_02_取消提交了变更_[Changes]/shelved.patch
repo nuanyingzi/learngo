@@ -1,0 +1,95 @@
+Index: struct/main.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package main\r\n// 结构体\r\nimport \"fmt\"\r\n\r\ntype person struct {\r\n\tname, city string\r\n\tage int8\r\n}\r\n\r\nfunc main() {\r\n\t// 1 基本实例化\r\n\tvar p1 person\r\n\tp1.name = \"小王子\"\r\n\tp1.city = \"赣州\"\r\n\tp1.age = 18\r\n\tfmt.Printf(\"p1: %v\\n\", p1) // p1: {小王子 赣州 18}\r\n\tfmt.Printf(\"p1: %#v\\n\", p1) // p1: main.person{name:\"小王子\", city:\"赣州\", age:18}\r\n\r\n\t// 2 匿名结构体\r\n\tvar user struct{Name string; Age int}\r\n\tuser.Name = \"小偶像\"\r\n\tuser.Age = 19\r\n\tfmt.Printf(\"user: %#v\\n\", user) // user: struct { Name string; Age int }{Name:\"小偶像\", Age:19}\r\n\r\n\t// 3 创建指针类型结构体\r\n\tvar p2 = new(person)\r\n\tfmt.Printf(\"%T\\n\", p2) // *main.person\r\n\tfmt.Printf(\"p2 = %#v\\n\", p2) // p2 = &main.person{name:\"\", city:\"\", age:0}\r\n\tp2.name = \"小公主\"\r\n\tp2.city = \"上海\"\r\n\tp2.age = 43\r\n\tfmt.Printf(\"p2=%#v\\n\", p2) // p2=&main.person{name:\"小公主\", city:\"上海\", age:43}\r\n}\r\n
+===================================================================
+diff --git a/struct/main.go b/struct/main.go
+--- a/struct/main.go	
++++ b/struct/main.go	
+@@ -7,6 +7,18 @@
+ 	age int8
+ }
+ 
++type test struct {
++	a int8
++	b int8
++	c int8
++	d int8
++}
++
++type student struct {
++	name string
++	age int
++}
++
+ func main() {
+ 	// 1 基本实例化
+ 	var p1 person
+@@ -30,4 +42,67 @@
+ 	p2.city = "上海"
+ 	p2.age = 43
+ 	fmt.Printf("p2=%#v\n", p2) // p2=&main.person{name:"小公主", city:"上海", age:43}
++
++	// 4 取结构体的地址实例化
++	p3 := &person{} // 相当于对该结构体类型进行了一次new实例化操作
++	fmt.Printf("%T\n", p3) // *main.person
++	fmt.Printf("p3 = %#v\n", p3) // p3 = &main.person{name:"", city:"", age:0}
++	p3.name = "Jack"
++	p3.city = "Los Angeles"
++	p3.age = 80
++	fmt.Printf("p3 = %#v\n", p3)
++
++	// 5 使用键值对初始化
++	p5 := person{
++		name: "呵呵",
++		city: "上海",
++		age: 18,
++	}
++	fmt.Printf("%#v\n", p5) // main.person{name:"呵呵", city:"上海", age:18}
++
++	p6 := &person{
++		name: "啊啊",
++		city: "北京",
++		age: 18,
++	}
++	fmt.Printf("%#v\n", p6) // &main.person{name:"啊啊", city:"北京", age:18}
++
++	// 7 没有值的字段可以不写
++	p7 := &person{
++		city: "烟台",
++	}
++	fmt.Printf("%#v\n", p7) // &main.person{name:"", city:"烟台", age:0}
++
++	// 8 初始化结构体时可以不写键
++	p8 := &person{
++		"哈哈",
++		"昆明",
++		28,
++	}
++	fmt.Printf("%#v\n", p8) // &main.person{name:"哈哈", city:"昆明", age:28}
++
++	p9 := test{
++		1, 2,3,4,
++	}
++	fmt.Printf("%p\n", &p9.a)
++	fmt.Printf("%p\n", &p9.b)
++	fmt.Printf("%p\n", &p9.c)
++	fmt.Printf("%p\n", &p9.d)
++
++	//type student struct {
++	//	name string
++	//	age  int
++	//}
++	m := make(map[string]*student)
++	stus := []student{
++		{name: "张三", age: 18},
++		{name: "李四", age: 19},
++		{name: "王五", age: 20},
++	}
++	for _, stu := range stus {
++		m[stu.name] = &stu
++	}
++	for k, v := range m {
++		fmt.Println(k, "=>",v.name)
++	}
+ }

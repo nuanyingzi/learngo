@@ -5,27 +5,20 @@ import (
 	"sync"
 )
 
-// 声明全局等待组变量
 var wg sync.WaitGroup
 
-func hello() {
-	fmt.Println("Hello")
-	wg.Done() // 告知当前goroutine完成
+func hello(i int) {
+	fmt.Println("hello ", i)
+	wg.Done() // 通知wg把计数器-1
 }
 
-func countHello(i int) {
-	defer wg.Done() // goroutine结束就登记-1
-	fmt.Println("Hello", i)
-}
+func main() { // 开启一个主goroutine去执行main函数
 
-func main() {
-	//wg.Add(1) // 登记一个goroutine
-	//go hello()
-	//fmt.Println("你好")
-	//wg.Wait() // 阻塞等待登记的goroutine完成
-	for i := 0; i < 10; i++ {
-		wg.Add(1) // 启动一个goroutine就登记+1
-		go countHello(i)
+	for i := 0; i < 10000; i++ {
+		wg.Add(1)   // 计数牌+1
+		go hello(i) // 开启了一个goroutine去执行hello这个函数
 	}
-	wg.Wait() // 等待所有登记的goroutine都结束
+
+	fmt.Println("hello main")
+	wg.Wait() // 阻塞 等所有小弟都干完活之后才收兵
 }

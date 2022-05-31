@@ -5,27 +5,28 @@ import (
 	"sync"
 )
 
-// 多个goroutine并发操作全局变量x
-
 var (
-	x    int64
-	wg   sync.WaitGroup
-	lock sync.Mutex // 互斥锁
+	x  int64
+	wg sync.WaitGroup
+	m  sync.Mutex // 互斥锁
 )
 
+// add 对全局变量x执行5000次加1操作
 func add() {
-	for i := 0; i < 50000; i++ {
-		lock.Lock() // 加锁
+	for i := 0; i < 5000; i++ {
+		m.Lock() // 修改前加锁
 		x += 1
-		lock.Unlock() // 释放锁
+		m.Unlock() // 改完之后释放锁
 	}
 	wg.Done()
 }
 
 func main() {
 	wg.Add(2)
+
 	go add()
 	go add()
+
 	wg.Wait()
-	fmt.Println(x)
+	fmt.Printf("x:%d\n", x)
 }

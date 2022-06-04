@@ -24,4 +24,15 @@ func main() {
 	name = "赣州小公主"
 	// 向打开的文件句柄中写入内容
 	fmt.Fprintf(fileObj, "往文件中写入信息:%s", name)
+
+	// Sprint系列函数会把传入的数据生成并返回一个字符串
+	s1 := fmt.Sprint("赣州小公主")
+	name = "深圳小王子"
+	age := 18
+	s2 := fmt.Sprintf("name:%s,age:%d", name, age)
+	s3 := fmt.Sprintln("深圳小狗")
+	fmt.Println(s1, s2, s3)
+
+	// Errorf函数根据format参数生成格式化字符串并返回一个包含该字符串的错误
+	err := fmt.Errorf("这是一个错误")
 }

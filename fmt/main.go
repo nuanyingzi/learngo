@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 )
@@ -34,5 +35,20 @@ func main() {
 	fmt.Println(s1, s2, s3)
 
 	// Errorf函数根据format参数生成格式化字符串并返回一个包含该字符串的错误
-	err := fmt.Errorf("这是一个错误")
+	//err := fmt.Errorf("这是一个错误")
+
+	/*var (
+		studentName string
+		score       int
+		married     bool
+	)
+	fmt.Scan(&studentName, &score, &married)
+	fmt.Scanf("1:%s 2:%d 3:%t", &studentName, &score, &married)
+	fmt.Scanln(&studentName, &score, &married)
+	fmt.Printf("扫描结果： studentName:%s score:%d married:%t \n", studentName, score, married)*/
+
+	reader := bufio.NewReader(os.Stdin) // 从标准输入生成读对象
+	fmt.Print("请输入内容：")
+	text, _ := reader.ReadString('\n') // 读到换行
+	fmt.Printf("%#v\n", text)
 }

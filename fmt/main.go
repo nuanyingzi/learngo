@@ -37,6 +37,16 @@ func main() {
 	// Errorf函数根据format参数生成格式化字符串并返回一个包含该字符串的错误
 	//err := fmt.Errorf("这是一个错误")
 
+	// 整型占位符
+	n := 65
+	fmt.Printf("%b\n", n)
+	fmt.Printf("%c\n", n)
+	fmt.Printf("%d\n", n)
+	fmt.Printf("%o\n", n)
+	fmt.Printf("%x\n", n)
+	fmt.Printf("%X\n", n)
+	//err := fmt.Errorf("这是一个错误")
+
 	/*var (
 		studentName string
 		score       int

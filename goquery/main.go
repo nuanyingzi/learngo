@@ -8,7 +8,7 @@ import (
 )
 
 func BaiduHotSearch() {
-	res, err := http.Get("https://www.baidu.com")
+	res, err := http.Get("http://www.baidu.com")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,5 +28,5 @@ func BaiduHotSearch() {
 }
 
 func main() {
-	//BaiduHotSearch()
+	BaiduHotSearch()
 }

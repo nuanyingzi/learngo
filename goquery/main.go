@@ -8,7 +8,7 @@ import (
 )
 
 func BaiduHotSearch() {
-	res, err := http.Get("http://www.baidu.com")
+	res, err := http.Get("https://m.dytt8.net/index2.htm")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -20,8 +20,8 @@ func BaiduHotSearch() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	doc.Find(".s-hotsearch-content .hotsearch-item").Each(func(i int, s *goquery.Selection) {
-		content := s.Find(".title-content-title").Text()
+	doc.Find("ul").Each(func(i int, s *goquery.Selection) {
+		content := s.Find("a").Text()
 		fmt.Printf("%d: %s\n", i, content)
 	})
 
